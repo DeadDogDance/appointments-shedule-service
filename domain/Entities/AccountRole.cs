@@ -1,7 +1,8 @@
 ﻿namespace domain.Entities
 {
-    public class AccountRole
+    public enum AccountRole
     {
-        public int RoleId { get; private set; }
+        User = 0,
+        Administrator = 1,
     }
 }
