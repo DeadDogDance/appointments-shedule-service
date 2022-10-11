@@ -168,8 +168,6 @@ public class UserTests
     [Fact]
     public void CreateUser_ShouldOk()
     {
-        string login = "Amongus";
-
         _userAdaptorMock.Setup(repository => repository.GetUserByLogin(It.IsAny<string>()))
                     .Returns(() => null);
 
