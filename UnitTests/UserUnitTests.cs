@@ -10,11 +10,11 @@ public class UserTests
 {
     private readonly UserInteractor _userInteractor;
     private readonly Mock<IUserAdaptor> _userAdaptorMock;
-
+    
     public UserTests()
     {
         _userAdaptorMock = new Mock<IUserAdaptor>();
-        _userInteractor = new UserInteractor(_userAdaptorMock.Object);
+        _userInteractor = new UserInteractor(_userAdaptorMock.Object);  
     }
 
     [Fact]
