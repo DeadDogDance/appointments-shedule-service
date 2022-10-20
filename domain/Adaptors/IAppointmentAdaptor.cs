@@ -4,8 +4,8 @@ namespace domain.Adaptors
 {
     public interface IAppointmentAdaptor
     {
-        public Appointment? SaveAppointment(DateOnly date);
-        public Appointment? SaveAppointment(DateOnly date, Doctor doctor);
+        public Appointment? SaveAppointment(DateTime startTime, DateTime endTime);
+        public Appointment? SaveAppointment(DateTime startTime, DateTime endTime, Doctor doctor);
         public List<DateOnly> GetFreeAppointmentDateList(Specialization specialization);
     }
 }

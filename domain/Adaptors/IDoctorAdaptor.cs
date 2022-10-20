@@ -4,7 +4,7 @@ namespace domain.Adaptors
 {
     public interface IDoctorAdaptor
     {
-        public Doctor? CreateDoctor(Doctor doctor);
+        public Doctor? CreateDoctor(int doctorId, string doctorName, Specialization specialization);
         public bool DeleteDoctor(int doctorId);
         public List<Doctor>? GetDoctorList();
         public Doctor? GetDoctor(int doctorId);

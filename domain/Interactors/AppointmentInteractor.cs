@@ -13,16 +13,22 @@ namespace domain.Interactors
             _appointmentAdaptor = appointmentAdaptor;
         }
 
-        public Result<Appointment> SaveAppointment(DateOnly date)
+        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime)
         {
-            Appointment? appointment = _appointmentAdaptor.SaveAppointment(date);
+            if (startTime > endTime)
+                return Result.Fail<Appointment>("End of appointment should be after the start");
+
+            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime);
 
             return appointment is null ? Result.Fail<Appointment>("Can not save appointment") : Result.Ok(appointment);
 
         }
-        public Result<Appointment> SaveAppointment(DateOnly date, Doctor doctor)
+        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime, Doctor doctor)
         {
-            Appointment? appointment = _appointmentAdaptor.SaveAppointment(date, doctor);
+            if (startTime > endTime)
+                return Result.Fail<Appointment>("End of appointment should be after the start");
+
+            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime, doctor);
 
             return appointment is null ? Result.Fail<Appointment>("Can not save appointment") : Result.Ok(appointment);
 

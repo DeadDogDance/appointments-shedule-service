@@ -145,7 +145,7 @@ public class DoctorTests
     [Fact]
     public void CreateDoctorEmptyName_ShouldFail()
     {
-        var res = _doctorInteractor.CreateDoctor(new Doctor(default, "", default));
+        var res = _doctorInteractor.CreateDoctor(default, "", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Empty doctor name", res.Error);
@@ -154,7 +154,7 @@ public class DoctorTests
     [Fact]
     public void CreateDoctorNullSpecialization_ShouldFail()
     {
-        var res = _doctorInteractor.CreateDoctor(new Doctor(default, "Amongus", default));
+        var res = _doctorInteractor.CreateDoctor(default, "Amongus", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("No specialization", res.Error);
@@ -163,8 +163,7 @@ public class DoctorTests
     [Fact]
     public void CreateDoctor_ShouldOk()
     {
-        var res = _doctorInteractor.CreateDoctor(
-            new Doctor(default, "Amongus", new Specialization(10,"Spec")));
+        var res = _doctorInteractor.CreateDoctor(default, "Amongus", new Specialization(10,"Spec"));
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);
