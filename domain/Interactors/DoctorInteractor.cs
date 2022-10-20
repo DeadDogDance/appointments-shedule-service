@@ -22,7 +22,7 @@ namespace domain.Interactors
         {
             if (string.IsNullOrEmpty(specialization.SpecializationName))
                 return Result.Fail<List<Doctor>>("Empty specialization");   
-
+            
             List<Doctor>? doctors = _doctorAdaptor.GetDoctor(specialization);
 
             return doctors is null ? Result.Fail<List<Doctor>>("Can not get list of doctors") : Result.Ok(doctors);
@@ -44,12 +44,14 @@ namespace domain.Interactors
 
             return result ? Result.Ok(result) : Result.Fail<bool>("Doctor not deleted");
         }
-        public Result<Doctor> CreateDoctor(Doctor doctor)
+        public Result<Doctor> CreateDoctor(int doctorId, string doctorName, Specialization specialization)
         {
-            if (string.IsNullOrEmpty(doctor.DoctorName))
+            if (string.IsNullOrEmpty(doctorName))
                 return Result.Fail<Doctor>("Empty doctor name");
-            if (doctor.Specialization is null)
+            if (specialization is null)
                 return Result.Fail<Doctor>("No specialization");
+
+            Doctor doctor = new Doctor(doctorId, doctorName, specialization);
 
             return Result.Ok(doctor);
         }

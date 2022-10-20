@@ -28,18 +28,20 @@ namespace domain.Interactors
             return password == user.Password ? Result.Ok() : Result.Fail("Password don't match");
 
         }
-        public Result<User> CreateUser(User user)
+        public Result<User> CreateUser(int userId, string login, string password, string phoneNumber, string userName, AccountRole userRole)
         {
-            if (string.IsNullOrEmpty(user.Login))
+            if (string.IsNullOrEmpty(login))
                 return Result.Fail<User>("Empty login");
-            if (string.IsNullOrEmpty(user.Password))
+            if (string.IsNullOrEmpty(password))
                 return Result.Fail<User>("Empty password");
-            if (string.IsNullOrEmpty(user.PhoneNumber))
+            if (string.IsNullOrEmpty(phoneNumber))
                 return Result.Fail<User>("Empty phone number");
-            if (string.IsNullOrEmpty(user.UserName))
+            if (string.IsNullOrEmpty(userName))
                 return Result.Fail<User>("Empty name");
 
-            User? existed_user = GetUserByLogin(user.Login).Value;
+            User? existed_user = GetUserByLogin(login).Value;
+
+            User user = new User(userId, login, password, phoneNumber, userName, userRole);
 
             return existed_user is null ? Result.Ok<User>(user) : Result.Fail<User>("Login already taken");
         }
