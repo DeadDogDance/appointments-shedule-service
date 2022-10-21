@@ -31,6 +31,7 @@ public class AppointmentUnitTests
         Assert.Equal("Can not save appointment", res.Error);
     }
 
+    [Fact]
     public void SaveAppointmentToAnyDoctorEndBeforeStart_ShouldFail()
     {
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 1);
