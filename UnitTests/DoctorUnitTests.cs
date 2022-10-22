@@ -128,11 +128,30 @@ public class DoctorTests
     }
 
     [Fact]
+    public void DeleteDoctorHaveAppointments_ShouldFail()
+    {
+        int id = 1;
+        _doctorAdaptorMock.Setup(repository => repository.GetDoctor(id))
+            .Returns(() => new Doctor(id, "Amongus", default));
+        _doctorAdaptorMock.Setup(repository => repository.HaveAppointmens(id))
+            .Returns(() => true);
+        _doctorAdaptorMock.Setup(repository => repository.DeleteDoctor(It.IsAny<int>()))
+            .Returns(() => false);
+
+        var res = _doctorInteractor.DeleteDoctor(id);
+
+        Assert.True(res.IsFailure);
+        Assert.Equal("Doctor have appointments", res.Error);
+    }
+
+    [Fact]
     public void DeleteDoctor_ShouldOk()
     {
         int id = 1;
         _doctorAdaptorMock.Setup(repository => repository.GetDoctor(id))
             .Returns(() => new Doctor(id,"Amongus",default));
+        _doctorAdaptorMock.Setup(repository => repository.HaveAppointmens(id))
+            .Returns(() => false);
         _doctorAdaptorMock.Setup(repository => repository.DeleteDoctor(It.IsAny<int>()))
             .Returns(() => true);
 

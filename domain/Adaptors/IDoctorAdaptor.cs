@@ -9,5 +9,7 @@ namespace domain.Adaptors
         public List<Doctor>? GetDoctorList();
         public Doctor? GetDoctor(int doctorId);
         public List<Doctor> GetDoctor(Specialization specialization);
+        public bool HaveAppointmens(int doctorId);
+        
     }
 }

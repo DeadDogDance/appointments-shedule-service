@@ -1,5 +1,4 @@
-﻿
-using domain.Adaptors;
+﻿using domain.Adaptors;
 using domain.Entities;
 
 namespace domain.Interactors
@@ -18,6 +17,11 @@ namespace domain.Interactors
             if (startTime > endTime)
                 return Result.Fail<Appointment>("End of appointment should be after the start");
 
+            Appointment? existedAppointment = _appointmentAdaptor.GetAppointment(startTime, endTime);
+
+            if (existedAppointment is not null)
+                return Result.Fail<Appointment>("This time reserved");
+
             Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime);
 
             return appointment is null ? Result.Fail<Appointment>("Can not save appointment") : Result.Ok(appointment);
@@ -27,6 +31,12 @@ namespace domain.Interactors
         {
             if (startTime > endTime)
                 return Result.Fail<Appointment>("End of appointment should be after the start");
+
+            Appointment? existedAppointment = _appointmentAdaptor.GetAppointment(startTime, endTime);
+
+            if (existedAppointment is not null)
+                return Result.Fail<Appointment>("This time reserved");
+
 
             Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime, doctor);
 

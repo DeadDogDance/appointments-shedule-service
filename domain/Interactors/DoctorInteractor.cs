@@ -7,6 +7,7 @@ namespace domain.Interactors
     {
         private readonly IDoctorAdaptor _doctorAdaptor;
 
+
         public DoctorInteractor(IDoctorAdaptor doctorAdaptor)
         {
             _doctorAdaptor = doctorAdaptor;
@@ -39,6 +40,11 @@ namespace domain.Interactors
 
             if (doctor is null)
                 return Result.Fail<bool>("Doctor not found");
+
+            var appointments = _doctorAdaptor.HaveAppointmens(doctorId);
+
+            if (appointments == true)
+                return Result.Fail<bool>("Doctor have appointments");
 
             bool result = _doctorAdaptor.DeleteDoctor(doctorId);
 

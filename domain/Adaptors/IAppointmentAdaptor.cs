@@ -7,5 +7,6 @@ namespace domain.Adaptors
         public Appointment? SaveAppointment(DateTime startTime, DateTime endTime);
         public Appointment? SaveAppointment(DateTime startTime, DateTime endTime, Doctor doctor);
         public List<DateOnly> GetFreeAppointmentDateList(Specialization specialization);
+        public Appointment? GetAppointment(DateTime startTime, DateTime endTime);
     }
 }
