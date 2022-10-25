@@ -10,11 +10,11 @@ public class UserTests
 {
     private readonly UserInteractor _userInteractor;
     private readonly Mock<IUserAdaptor> _userAdaptorMock;
-
+    
     public UserTests()
     {
         _userAdaptorMock = new Mock<IUserAdaptor>();
-        _userInteractor = new UserInteractor(_userAdaptorMock.Object);
+        _userInteractor = new UserInteractor(_userAdaptorMock.Object);  
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class UserTests
     [Fact]
     public void CreateUserNoData_ShouldFail()
     {
-        var res = _userInteractor.CreateUser(new User(default, "", "", "", "", default));
+        var res = _userInteractor.CreateUser(default, "", "", "", "", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Empty login", res.Error);
@@ -127,7 +127,7 @@ public class UserTests
     [Fact]
     public void CreateUserEmptyPassword_ShouldFail()
     {
-        var res = _userInteractor.CreateUser(new User(default, "Amongus", "", "", "", default));
+        var res = _userInteractor.CreateUser(default, "Amongus", "", "", "", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Empty password", res.Error);
@@ -136,7 +136,7 @@ public class UserTests
     [Fact]
     public void CreateUserEmptyPhoneNumber_ShouldFail()
     {
-        var res = _userInteractor.CreateUser(new User(default, "Amongus", "amongus", "", "", default));
+        var res = _userInteractor.CreateUser(default, "Amongus", "amongus", "", "", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Empty phone number", res.Error);
@@ -145,7 +145,7 @@ public class UserTests
     [Fact]
     public void CreateUserEmptyName_ShouldFail()
     {
-        var res = _userInteractor.CreateUser(new User(default, "Amongus", "amongus", "88888888", "", default));
+        var res = _userInteractor.CreateUser(default, "Amongus", "amongus", "88888888", "", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Empty name", res.Error);
@@ -159,7 +159,7 @@ public class UserTests
         _userAdaptorMock.Setup(repository => repository.GetUserByLogin(It.IsAny<string>()))
                     .Returns(() => new User(default, login, "1", "", "", default));
 
-        var res = _userInteractor.CreateUser(new User(default, login, "amongus", "88888888", "Sussy Man", default));
+        var res = _userInteractor.CreateUser(default, login, "amongus", "88888888", "Sussy Man", default);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Login already taken", res.Error);
@@ -171,7 +171,7 @@ public class UserTests
         _userAdaptorMock.Setup(repository => repository.GetUserByLogin(It.IsAny<string>()))
                     .Returns(() => null);
 
-        var res = _userInteractor.CreateUser(new User(default, "AnotherLogin", "amongus", "88888888", "Sussy Man", default));
+        var res = _userInteractor.CreateUser(default, "AnotherLogin", "amongus", "88888888", "Sussy Man", default);
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);
