@@ -5,10 +5,10 @@ namespace domain.Interactors
 {
     public class DoctorInteractor
     {
-        private readonly IDoctorAdaptor _doctorAdaptor;
+        private readonly IDoctorAdapter _doctorAdaptor;
 
 
-        public DoctorInteractor(IDoctorAdaptor doctorAdaptor)
+        public DoctorInteractor(IDoctorAdapter doctorAdaptor)
         {
             _doctorAdaptor = doctorAdaptor;
         }
@@ -54,10 +54,8 @@ namespace domain.Interactors
         {
             if (string.IsNullOrEmpty(doctorName))
                 return Result.Fail<Doctor>("Empty doctor name");
-            if (specialization is null)
-                return Result.Fail<Doctor>("No specialization");
 
-            Doctor doctor = new Doctor(doctorId, doctorName, specialization);
+            Doctor doctor = new Doctor(doctorId, doctorName, specialization.SpecializationId);
 
             return Result.Ok(doctor);
         }

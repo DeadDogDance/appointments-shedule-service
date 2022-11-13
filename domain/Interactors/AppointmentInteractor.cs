@@ -5,14 +5,14 @@ namespace domain.Interactors
 {
     public class AppointmentInteractor
     {
-        private readonly IAppointmentAdaptor _appointmentAdaptor;
+        private readonly IAppointmentAdapter _appointmentAdaptor;
 
-        public AppointmentInteractor(IAppointmentAdaptor appointmentAdaptor)
+        public AppointmentInteractor(IAppointmentAdapter appointmentAdaptor)
         {
             _appointmentAdaptor = appointmentAdaptor;
         }
 
-        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime)
+        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime, User user,Specialization specialization)
         {
             if (startTime > endTime)
                 return Result.Fail<Appointment>("End of appointment should be after the start");
@@ -22,12 +22,12 @@ namespace domain.Interactors
             if (existedAppointment is not null)
                 return Result.Fail<Appointment>("This time reserved");
 
-            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime);
+            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime, user, specialization);
 
             return appointment is null ? Result.Fail<Appointment>("Can not save appointment") : Result.Ok(appointment);
 
         }
-        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime, Doctor doctor)
+        public Result<Appointment> SaveAppointment(DateTime startTime, DateTime endTime, User user, Doctor doctor)
         {
             if (startTime > endTime)
                 return Result.Fail<Appointment>("End of appointment should be after the start");
@@ -38,7 +38,7 @@ namespace domain.Interactors
                 return Result.Fail<Appointment>("This time reserved");
 
 
-            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime, doctor);
+            Appointment? appointment = _appointmentAdaptor.SaveAppointment(startTime, endTime, user, doctor);
 
             return appointment is null ? Result.Fail<Appointment>("Can not save appointment") : Result.Ok(appointment);
 

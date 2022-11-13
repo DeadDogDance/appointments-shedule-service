@@ -9,11 +9,11 @@ namespace UnitTests;
 public class DoctorTests
 {
     private readonly DoctorInteractor _doctorInteractor;
-    private readonly Mock<IDoctorAdaptor> _doctorAdaptorMock;
+    private readonly Mock<IDoctorAdapter> _doctorAdaptorMock;
         
     public DoctorTests()
     {
-        _doctorAdaptorMock = new Mock<IDoctorAdaptor>();
+        _doctorAdaptorMock = new Mock<IDoctorAdapter>();
         _doctorInteractor = new DoctorInteractor(_doctorAdaptorMock.Object);
     }
 
@@ -171,18 +171,9 @@ public class DoctorTests
     }
 
     [Fact]
-    public void CreateDoctorNullSpecialization_ShouldFail()
-    {
-        var res = _doctorInteractor.CreateDoctor(default, "Amongus", default);
-
-        Assert.True(res.IsFailure);
-        Assert.Equal("No specialization", res.Error);
-    }
-
-    [Fact]
     public void CreateDoctor_ShouldOk()
     {
-        var res = _doctorInteractor.CreateDoctor(default, "Amongus", new Specialization(10,"Spec"));
+        var res = _doctorInteractor.CreateDoctor(default, "Amongus", new Specialization(10, " "));
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);

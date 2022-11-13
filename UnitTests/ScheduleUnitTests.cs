@@ -9,11 +9,11 @@ namespace UnitTests;
 public class ScheduleUnitTests
 {
     private readonly ScheduleInteractor _scheduleInteractor;
-    private readonly Mock<IScheduleAdaptor> _scheduleAdaptorMock;
+    private readonly Mock<IScheduleAdapter> _scheduleAdaptorMock;
 
     public ScheduleUnitTests()
     {
-        _scheduleAdaptorMock = new Mock<IScheduleAdaptor>();
+        _scheduleAdaptorMock = new Mock<IScheduleAdapter>();
         _scheduleInteractor = new ScheduleInteractor(_scheduleAdaptorMock.Object);
     }
 
@@ -78,12 +78,14 @@ public class ScheduleUnitTests
     [Fact]
     public void EditSchedule_ShouldFail()
     {
-        Schedule schedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
+        Schedule oldSchedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
+        Schedule newSchedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
 
-        _scheduleAdaptorMock.Setup(repository => repository.EditSchedule(schedule))
+
+        _scheduleAdaptorMock.Setup(repository => repository.EditSchedule(oldSchedule, newSchedule))
             .Returns(() => null);
 
-        var res = _scheduleInteractor.EditSchedule(schedule);
+        var res = _scheduleInteractor.EditSchedule(oldSchedule, newSchedule);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Can not edit schedule", res.Error);
@@ -92,12 +94,13 @@ public class ScheduleUnitTests
     [Fact]
     public void EditSchedule_ShouldOk()
     {
-        Schedule schedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
+        Schedule oldSchedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
+        Schedule newSchedule = new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1));
 
-        _scheduleAdaptorMock.Setup(repository => repository.EditSchedule(schedule))
+        _scheduleAdaptorMock.Setup(repository => repository.EditSchedule(oldSchedule, newSchedule))
             .Returns(() => new Schedule(default, new DateTime(1, 1, 1), new DateTime(1, 1, 1)));
 
-        var res = _scheduleInteractor.EditSchedule(schedule);
+        var res = _scheduleInteractor.EditSchedule(oldSchedule, newSchedule);
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);

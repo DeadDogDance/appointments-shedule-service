@@ -9,11 +9,11 @@ namespace UnitTests;
 public class UserTests
 {
     private readonly UserInteractor _userInteractor;
-    private readonly Mock<IUserAdaptor> _userAdaptorMock;
+    private readonly Mock<IUserAdapter> _userAdaptorMock;
     
     public UserTests()
     {
-        _userAdaptorMock = new Mock<IUserAdaptor>();
+        _userAdaptorMock = new Mock<IUserAdapter>();
         _userInteractor = new UserInteractor(_userAdaptorMock.Object);  
     }
 

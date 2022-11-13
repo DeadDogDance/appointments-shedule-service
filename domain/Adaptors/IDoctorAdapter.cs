@@ -2,7 +2,7 @@
 
 namespace domain.Adaptors
 {
-    public interface IDoctorAdaptor
+    public interface IDoctorAdapter
     {
         public Doctor? CreateDoctor(int doctorId, string doctorName, Specialization specialization);
         public bool DeleteDoctor(int doctorId);
