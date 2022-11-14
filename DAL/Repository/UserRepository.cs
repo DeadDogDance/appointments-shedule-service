@@ -29,7 +29,7 @@ namespace DataBase.Repository
                 Password = password,
                 PhoneNumber = phoneNumber,
                 UserName = userName,
-                UserRole = (int) userRole
+                UserRole =  userRole
             };
 
 
