@@ -49,11 +49,13 @@ namespace DataBase.Repository
             
             foreach (var doctor in doctors)
             {
-                var doctorAppointments = _context.Appointments.Where(app => app.DoctorId == doctor.DoctorId).ToList();
+                var doctorAppointments = _context.Appointments.Where(app => app.DoctorId == doctor.DoctorId
+                    && app.StartTime >= DateTime.Now).ToList();
 
                 for (int i = 1; i < doctorAppointments.Count; i++)
                 {
-                    if (doctorAppointments[i].StartTime - doctorAppointments[i - 1].EndTime >= minimalSpan)
+                    if (doctorAppointments[i].StartTime - doctorAppointments[i - 1].EndTime >= minimalSpan
+                        && doctorAppointments[i-1].EndTime.Date == doctorAppointments[i].StartTime.Date)
                     {
                         freeAppontments.Add(DateOnly.FromDateTime(doctorAppointments[i - 1].EndTime));
                         break;
