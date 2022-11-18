@@ -8,11 +8,11 @@ namespace UnitTests;
 public class AppointmentUnitTests
 {
     private readonly AppointmentInteractor _appointmentInteractor;
-    private readonly Mock<IAppointmentAdaptor> _appointmentAdaptorMock;
+    private readonly Mock<IAppointmentAdapter> _appointmentAdaptorMock;
 
     public AppointmentUnitTests()
     {
-        _appointmentAdaptorMock = new Mock<IAppointmentAdaptor>();
+        _appointmentAdaptorMock = new Mock<IAppointmentAdapter>();
         _appointmentInteractor = new AppointmentInteractor(_appointmentAdaptorMock.Object);
     }
 
@@ -21,14 +21,16 @@ public class AppointmentUnitTests
     {
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime,endTime))
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, new Specialization(0, " ")))
                     .Returns(() => null);
 
         _appointmentAdaptorMock.Setup(repository => repository.GetAppointment(startTime, endTime))
                     .Returns(() => new Appointment(startTime, endTime, default, default));
 
-        var res = _appointmentInteractor.SaveAppointment(startTime,endTime);
+        var res = _appointmentInteractor.SaveAppointment(startTime,endTime, user, new Specialization(0, " "));
 
         Assert.True(res.IsFailure);
         Assert.Equal("This time reserved", res.Error);
@@ -39,13 +41,15 @@ public class AppointmentUnitTests
     {
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime))
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user,new Specialization(0," ")))
                     .Returns(() => null);
         _appointmentAdaptorMock.Setup(repository => repository.GetAppointment(startTime, endTime))
                     .Returns(() => null);
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime);
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, new Specialization(0, " "));
 
         Assert.True(res.IsFailure);
         Assert.Equal("Can not save appointment", res.Error);
@@ -56,11 +60,13 @@ public class AppointmentUnitTests
     {
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 1);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 0);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime))
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, new Specialization(0, " ")))
                     .Returns(() => null);
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime);
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, new Specialization(0, " "));
 
         Assert.True(res.IsFailure);
         Assert.Equal("End of appointment should be after the start", res.Error);
@@ -71,13 +77,14 @@ public class AppointmentUnitTests
     {
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
+        User user = new User(default, default, default, default, default, default);
+        Specialization specialization = new Specialization(default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime))
-                    .Returns(() => new Appointment(startTime, endTime, default, default));
-        _appointmentAdaptorMock.Setup(repository => repository.GetAppointment(startTime, endTime))
-                    .Returns(() => null);
-        
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime);
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, specialization))
+                    .Returns(() => new Appointment(startTime, endTime, user.UserId, default));
+
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, specialization);
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);
@@ -89,13 +96,14 @@ public class AppointmentUnitTests
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
         Doctor doctor = new Doctor(default, "", default);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, doctor))
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, doctor))
                     .Returns(() => new Appointment(startTime, endTime, default, default));
         _appointmentAdaptorMock.Setup(repository => repository.GetAppointment(startTime, endTime))
                     .Returns(() => new Appointment(startTime, endTime, default, default));
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, doctor);
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, doctor);
 
         Assert.True(res.IsFailure);
         Assert.Equal("This time reserved", res.Error);
@@ -107,11 +115,13 @@ public class AppointmentUnitTests
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
         Doctor doctor = new Doctor(default,"",default);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, doctor))
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, doctor))
                     .Returns(() => null);
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, doctor);
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, doctor);
 
         Assert.True(res.IsFailure);
         Assert.Equal("Can not save appointment", res.Error);
@@ -123,11 +133,13 @@ public class AppointmentUnitTests
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 1);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 0);
         Doctor doctor = new Doctor(default, "", default);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, doctor))
+
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, doctor))
                     .Returns(() => null);
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, doctor);
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, doctor);
 
         Assert.True(res.IsFailure);
         Assert.Equal("End of appointment should be after the start", res.Error);
@@ -139,11 +151,13 @@ public class AppointmentUnitTests
         DateTime startTime = new DateTime(1, 1, 1, 1, 0, 0);
         DateTime endTime = new DateTime(1, 1, 1, 1, 0, 1);
         Doctor doctor = new Doctor(default, "", default);
+        User user = new User(default, default, default, default, default, default);
 
-        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, doctor))
-                    .Returns(() => new Appointment(startTime, endTime, default, default));
 
-        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, doctor);
+        _appointmentAdaptorMock.Setup(repository => repository.SaveAppointment(startTime, endTime, user, doctor))
+                    .Returns(() => new Appointment(startTime, endTime, user.UserId, default));
+
+        var res = _appointmentInteractor.SaveAppointment(startTime, endTime, user, doctor);
 
         Assert.True(res.Success);
         Assert.Equal(string.Empty, res.Error);

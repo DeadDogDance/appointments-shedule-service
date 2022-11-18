@@ -6,9 +6,9 @@ namespace domain.Interactors
     public class UserInteractor
     {
         
-        private readonly IUserAdaptor _userAdaptor;
+        private readonly IUserAdapter _userAdaptor;
 
-        public UserInteractor(IUserAdaptor userAdaptor)
+        public UserInteractor(IUserAdapter userAdaptor)
         {
             _userAdaptor = userAdaptor;
         }

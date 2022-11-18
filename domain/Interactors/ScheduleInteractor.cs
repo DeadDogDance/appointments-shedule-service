@@ -5,9 +5,9 @@ namespace domain.Interactors
 {
     public class ScheduleInteractor
     {
-        private readonly IScheduleAdaptor _scheduleAdaptor;
+        private readonly IScheduleAdapter _scheduleAdaptor;
 
-        public ScheduleInteractor(IScheduleAdaptor scheduleAdaptor)
+        public ScheduleInteractor(IScheduleAdapter scheduleAdaptor)
         {
             _scheduleAdaptor = scheduleAdaptor;
         }
@@ -26,9 +26,9 @@ namespace domain.Interactors
             return result is null ? Result.Fail<Schedule>("Can not add schedule") : Result.Ok(schedule);
         }
 
-        public Result<Schedule> EditSchedule(Schedule schedule)
+        public Result<Schedule> EditSchedule(Schedule oldSchedule, Schedule newSchedule)
         {
-            Schedule? result = _scheduleAdaptor.EditSchedule(schedule);
+            Schedule? result = _scheduleAdaptor.EditSchedule(oldSchedule, newSchedule);
 
             return result is null ? Result.Fail<Schedule>("Can not edit schedule") : Result.Ok(result);
         }
